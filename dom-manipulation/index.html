@@ -1,35 +1,26 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dynamic Quote Generator</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    #quoteDisplay {
-      margin: 20px 0;
-      font-size: 1.2em;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-    }
-    .form-section {
-      margin-top: 20px;
-    }
+    body { font-family: Arial; padding: 20px; }
+    #quoteDisplay { margin: 20px 0; font-size: 1.2em; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+    .form-section { margin-top: 20px; }
+    select, input, button { margin: 5px 0; padding: 6px; }
   </style>
 </head>
 <body>
+
   <h1>Dynamic Quote Generator</h1>
 
-  <label for="categorySelect">Choose a category:</label>
-  <select id="categorySelect"></select>
+  <label for="categoryFilter">Filter by Category:</label>
+  <select id="categoryFilter"></select>
 
-  <div id="quoteDisplay">Click the button to show a quote.</div>
+  <div id="quoteDisplay">Select a category and click "Show Quote".</div>
 
-  <button id="newQuote">Show New Quote</button>
+  <button id="newQuote">Show Quote</button>
 
   <div class="form-section">
     <h3>Add New Quote</h3>
@@ -40,82 +31,12 @@
     </form>
   </div>
 
+  <div class="form-section">
+    <h3>Import / Export</h3>
+    <input type="file" id="importFile" accept=".json" />
+    <button id="exportBtn">Export Quotes as JSON</button>
+  </div>
+
   <script src="script.js"></script>
-  <script>
- // ✅ Check 1: Existence of the quotes array with objects containing text and category
-let quotes = [
-  { text: "Believe you can and you're halfway there.", category: "Motivation" },
-  { text: "Life is really simple, but we insist on making it complicated.", category: "Philosophy" },
-  { text: "The only true wisdom is in knowing you know nothing.", category: "Wisdom" }
-];
-
-// ✅ Get DOM Elements
-const quoteDisplay = document.getElementById('quoteDisplay');
-const newQuoteBtn = document.getElementById('newQuote');
-const categorySelect = document.getElementById('categorySelect');
-const addQuoteForm = document.getElementById('addQuoteForm');
-const quoteText = document.getElementById('quoteText');
-const quoteCategory = document.getElementById('quoteCategory');
-
-// ✅ Check 2: Function to show a random quote
-function displayRandomQuote() {
-  const selectedCategory = categorySelect.value;
-  const filteredQuotes = quotes.filter(q => q.category === selectedCategory);
-
-  // ✅ Check 3: Logic to select a random quote and update the DOM
-  if (filteredQuotes.length === 0) {
-    quoteDisplay.textContent = "No quotes available in this category.";
-    return;
-  }
-
-  const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
-  const randomQuote = filteredQuotes[randomIndex];
-  quoteDisplay.textContent = `"${randomQuote.text}"`;
-}
-
-// ✅ Check 4: Function to add a new quote
-function addQuote(event) {
-  event.preventDefault();
-
-  const newText = quoteText.value.trim();
-  const newCategory = quoteCategory.value.trim();
-
-  // ✅ Check 5: Logic to add a new quote and update the DOM
-  if (!newText || !newCategory) {
-    alert("Please fill in both quote and category.");
-    return;
-  }
-
-  quotes.push({ text: newText, category: newCategory });
-  updateCategoryOptions();
-
-  quoteText.value = "";
-  quoteCategory.value = "";
-
-  alert("New quote added!");
-}
-
-// Update dropdown categories from quotes array
-function updateCategoryOptions() {
-  const categories = [...new Set(quotes.map(q => q.category))];
-  categorySelect.innerHTML = ""; // Clear previous options
-
-  categories.forEach(cat => {
-    const option = document.createElement('option');
-    option.value = cat;
-    option.textContent = cat;
-    categorySelect.appendChild(option);
-  });
-}
-
-// ✅ Check 6: Add event listeners
-newQuoteBtn.addEventListener('click', displayRandomQuote);
-addQuoteForm.addEventListener('submit', addQuote);
-
-// Initialize the dropdown and display a quote
-updateCategoryOptions();
-displayRandomQuote();
-
-  </script>
 </body>
 </html>
